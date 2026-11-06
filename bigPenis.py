@@ -1,74 +1,85 @@
 import random
 
-def attack(mstrHP):
+
+
+def attack(monster_hp):
     damage = random.randint(10, 25)
-    mstrHP -= damage
+    monster_hp -= damage
+    if monster_hp < 0:
+        monster_hp = 0
+    print("Вы нанесли монстру", damage, "урона!")
+    return monster_hp
 
-    if mstrHP < 0:
-        mstrHP = 0
-    print("Вы нанесли монстру", damage, "дамага")
-    return mstrHP
 
-def mstrAttack(plrHP):
+
+def monster_attack(player_hp):
     damage = random.randint(5, 20)
-    plrHP -= damage
+    player_hp -= damage
+    if player_hp < 0:
+        player_hp = 0
+    print("Монстр нанёс вам", damage, "урона!")
+    return player_hp
 
-    if plrHP < 0:
-        plrHP = 0
-    print("Монстр нанес вам", damage, "дамага")
-    return plrHP
 
-def heal(plrHP):
-    if plrHP == 100:
-        print("Здоровье уже полное")
+
+def heal(player_hp):
+    if player_hp == 100:
+        print("Здоровье уже полное!")
     else:
-        plrHP = min(plrHP +15, 100)
-        print("Вы восстановили хп")
-    return plrHP
+        player_hp = min(player_hp + 15, 100)
+        print("Вы восстановили здоровье!")
+    return player_hp
 
-def show_status(plrHP, mstrHP):
-    print("Ваше хп:", plrHP)
-    print("Хп монстра:", mstrHP)
+
+
+def show_status(player_hp, monster_hp):
+    print("\nВаше здоровье:", player_hp)
+    print("Здоровье монстра:", monster_hp)
+
+
 
 def main():
-    plrHP = 100
-    mstrHP = 100
-    while plrHP > 0 and mstrHP > 0:
-        print("\nБитва инвалидов. Вы - творцы истории.")
-        print("1 - отпиздить")
-        print("2 - захиллиться")
-        print("3 - показать хп")
-        print("4 - съебаться")
+    player_hp = 100
+    monster_hp = 100
 
-        choice = input("\tВыберите действие: ")
+
+    while player_hp > 0 and monster_hp > 0:
+        print("\n===== БИТВА С МОНСТРОМ =====")
+        print("1. Атаковать")
+        print("2. Восстановить здоровье")
+        print("3. Посмотреть состояние боя")
+        print("4. Выйти")
+
+
+        choice = input("Выберите действие: ")
+
 
         if choice == "1":
-            mstrHP = attack(mstrHP)
-            if mstrHP > 0:
-                plrHP = mstrAttack(plrHP)
-        
+            monster_hp = attack(monster_hp)
+        if monster_hp > 0:
+            player_hp = monster_attack(player_hp)
         elif choice == "2":
-            oldHP = plrHP
-            plrHP = heal(plrHP)
-            if plrHP > oldHP:
-                mstrHP_check = mstrAttack
-                plrHP = mstrHP_check
-        
+            old_hp = player_hp
+            player_hp = heal(player_hp)
+        if player_hp > old_hp:
+            monster_hp_check = monster_attack(player_hp)
+            player_hp = monster_hp_check
         elif choice == "3":
-            show_status(plrHP, mstrHP)
-
+            show_status(player_hp, monster_hp)
         elif choice == "4":
-            print("Вы успешно съебались")
+            print("Вы покинули игру")
             break
-
         else:
-            print("Введи корректную команду, еблан!")
+            print("Неверный пункт меню")
 
-        if plrHP <= 0:
-            print("Сосо, ты проиграл")
-            
-        elif mstrHP <= 0:
-            print("Легенда, ты выиграл")
-            
-    
+
+    if player_hp <= 0:
+        print("\nВы проиграли! Монстр победил.")
+    elif monster_hp <= 0:
+        print("\nПоздравляем! Вы победили монстра.")
+
+
+
 main()
+
+
